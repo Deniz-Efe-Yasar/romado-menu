@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#faf6f0">
+<title>Romado Dondurma | Menü</title>
+<meta name="description" content="Romado Dondurma menüsü: ekler, sütlü tatlılar ve pastalar.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍦</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf6f0;
+    --text: #1f1a17;
+    --muted: #8c8279;
+    --line: #e4dcd1;
+    --accent: #b3261e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 480px; margin: 0 auto; padding: 0 28px; }
+
+  header { text-align: center; padding: 64px 0 20px; }
+  h1 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(52px, 16vw, 68px);
+    line-height: 1;
+    letter-spacing: .01em;
+  }
+  .sub {
+    margin-top: 12px;
+    font-size: 12px; font-weight: 500; letter-spacing: .42em; text-transform: uppercase;
+    color: var(--accent); padding-left: .42em;
+  }
+  .orn { width: 44px; height: 1px; background: var(--text); margin: 30px auto 0; }
+
+  section { padding-top: 46px; }
+  h2 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-weight: 600; font-size: 30px; line-height: 1.1;
+    text-align: center;
+  }
+  .note {
+    text-align: center; color: var(--muted);
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase; margin-top: 6px;
+  }
+  ul { list-style: none; margin-top: 18px; }
+  li {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  li:first-child { border-top: 1px solid var(--line); }
+  .name { font-size: 18px; }
+  .dots { flex: 1; }
+  .price { font-size: 18px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .price small { font-size: 14px; font-weight: 400; color: var(--muted); margin-left: 3px; }
+  .price.empty { font-size: 13px; font-weight: 400; color: var(--muted); }
+
+  footer {
+    text-align: center; color: var(--muted);
+    font-size: 12px; letter-spacing: .08em; padding: 56px 0 56px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>Romado</h1>
+    <div class="sub">Dondurma</div>
+    <div class="orn"></div>
+  </header>
+
+  <main id="menu"></main>
+
+  <footer id="updated"></footer>
+</div>
+
+<script>
+/* ============================================================
+   MENÜ VERİSİ — fiyatları buradan güncelleyin.
+   price: sayı yazın (örn. 150). Boş bırakılırsa "Sorunuz" görünür.
+   note: kategori başlığının altında görünen açıklama (isteğe bağlı).
+   ============================================================ */
+const UPDATED = "24.11.2026";
+const MENU = [
+  { title: "Ekler & Sarma", note: "500 gram", items: [
+    { name: "Ekler", price: 490 },
+    { name: "Meyveli Ekler", price: 490 },
+    { name: "Muzlu Sarma", price: 490 },
+    { name: "Muzlu İbiza", price: 490 },
+  ]},
+  { title: "Sütlü Tatlılar", items: [
+    { name: "Sütlaç", price: 290 },
+    { name: "Kazandibi", price: 290 },
+    { name: "Tavuk Göğsü", price: 290 },
+  ]},
+  { title: "Pasta", items: [
+    { name: "0 No Pasta", price: 950 },
+    { name: "1 No Pasta", price: 1150 },
+    { name: "2 No Pasta", price: 1350 },
+  ]},
+];
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmt = p => (p === "" || p == null)
+  ? '<span class="price empty">Sorunuz</span>'
+  : `<span class="price">${Number(p).toLocaleString("tr-TR")}<small>₺</small></span>`;
+
+document.getElementById("menu").innerHTML = MENU.map(c => `
+  <section>
+    <h2>${esc(c.title)}</h2>
+    ${c.note ? `<div class="note">${esc(c.note)}</div>` : ""}
+    <ul>${c.items.map(i => `
+      <li><span class="name">${esc(i.name)}</span><span class="dots"></span>${fmt(i.price)}</li>`).join("")}
+    </ul>
+  </section>`).join("");
+
+document.getElementById("updated").textContent = "Güncelleme · " + UPDATED;
+</script>
+</body>
+</html>
